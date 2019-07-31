@@ -1,0 +1,25 @@
+[Unit]
+Description=BitcoinC daemon
+After=network.target
+
+[Service]
+User=bitcoinc
+Group=bitcoinc
+
+Type=forking
+PIDFile=/home/bitcoinc/.bitcoinc/bitcoincd.pid
+ExecStart=/home/bitcoinc/BitcoinC/bitcoincd -daemon -pid=/home/bitcoinc/.bitcoinc/bitcoincd.pid \
+-conf=/home/bitcoinc/.bitcoinc/bitcoinc.conf -datadir=/home/bitcoinc/.bitcoinc
+
+ExecStop=/home/bitcoinc/BitcoinC/bitcoinc-cli -conf=/home/bitcoinc/.bitcoinc/bitcoinc.conf stop
+ExecStop=/usr/bin/sleep 25
+
+Restart=no
+PrivateTmp=true
+TimeoutStopSec=60s
+TimeoutStartSec=2s
+StartLimitInterval=120s
+StartLimitBurst=5
+
+[Install]
+WantedBy=multi-user.target
